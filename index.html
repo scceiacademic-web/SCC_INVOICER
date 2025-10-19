@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCC Invoice Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-inter antialiased min-h-screen flex items-center justify-center p-4">
+    <div class="container mx-auto max-w-2xl bg-white rounded-2xl shadow-xl p-6 md:p-8">
+        <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6 bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-3 rounded-lg">SCC Invoice Generator</h1>
+        
+        <div id="inputScreen" class="grid grid-cols-1 gap-4">
+            <select id="c_id" class="bg-gray-50 border border-gray-300 text-gray-700 py-3 px-4 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-200">
+                <option value="data">Select Course</option>
+                <option value="data">Other</option>
+                <option value="">IT Course</option>
+                <option value="web">Spoken English Course</option>
+                <option value="design">2025 A/L Common Test Class</option>
+                <option value="marketing">Graphic Design</option>
+            </select>
+
+            <input id="p_id" type="number" placeholder="Payment Amount" class="bg-gray-50 border border-gray-300 text-gray-700 py-3 px-4 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-200">
+            
+            <h2 class="text-lg md:text-xl font-semibold text-gray-800 mt-4">Student Details</h2>
+            <input id="s_id" type="text" placeholder="Student ID" class="bg-gray-50 border border-gray-300 text-gray-700 py-3 px-4 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none uppercase transition duration-200">
+            <input id="b_id" type="text" placeholder="Batch" class="bg-gray-50 border border-gray-300 text-gray-700 py-3 px-4 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none uppercase transition duration-200">
+            <input id="n_id" type="text" placeholder="Student Name" class="bg-gray-50 border border-gray-300 text-gray-700 py-3 px-4 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-200">
+            <input id="a_id" type="text" placeholder="Address" class="bg-gray-50 border border-gray-300 text-gray-700 py-3 px-4 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-200">
+            <input id="m_id" type="tel" maxlength="10" placeholder="Mobile" class="bg-gray-50 border border-gray-300 text-gray-700 py-3 px-4 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-200">
+            <input id="e_id" type="email" placeholder="Email" class="bg-gray-50 border border-gray-300 text-gray-700 py-3 px-4 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition duration-200">
+            
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button onclick="addToInvoice()" class="bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">Save to Invoice</button>
+                <button onclick="reloadPage()" class="bg-gray-400 text-white font-semibold py-3 px-6 rounded-lg hover:bg-gray-500 focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 transition duration-200">Reload</button>
+            </div>
+        </div>
+
+        <div id="invScreen" style="display: none;" class="max-w-md mx-auto bg-white p-6 rounded-2xl shadow-lg border border-gray-200 mt-8">
+            <div class="flex justify-center mb-4">
+                <img src="./assets/scc_logo.jpg" alt="SCC Logo" class="h-16 md:h-20">
+            </div>
+            <h2 class="text-xl md:text-2xl font-bold text-center text-gray-800 underline mb-4">INVOICE FOR STUDENT</h2>
+            
+            <div class="text-sm text-gray-600">
+                <p><span class="font-semibold">DATE :</span> <span id="date">2025-10-19</span></p>
+            </div>
+
+            <div class="border border-gray-300 rounded-lg mt-4">
+                <div class="bg-gray-100 font-semibold px-4 py-2 border-b border-gray-300 rounded-t-lg">PAYMENT CONFIRMATION</div>
+                <div class="p-4 text-sm space-y-2">
+                    <p><span class="font-semibold">COURSE :</span> <span id="course"></span></p>
+                    <p>
+                        <span class="font-semibold">PAYMENT :</span> <span id="payment"></span> <span class="ml-4 text-green-600 font-semibold" id="paid-status">PAID</span>
+                    </p>
+                    <p>
+                        <span class="font-semibold">STATUS :</span>
+                        <span class="bg-green-500 text-white px-2 py-1 rounded ml-2 text-xs">SUCCESS</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="border border-gray-300 rounded-lg mt-4">
+                <div class="bg-gray-100 font-semibold px-4 py-2 border-b border-gray-300 rounded-t-lg">STUDENT DETAILS</div>
+                <div class="p-4 text-sm space-y-2">
+                    <p><span class="font-semibold">STUDENT NAME :</span> <span id="sname"></span></p>
+                    <p><span class="font-semibold">STUDENT ID :</span> <span id="sid"></span></p>
+                    <p><span class="font-semibold">BATCH :</span> <span id="batch"></span></p>
+                    <p><span class="font-semibold">ADDRESS :</span> <span id="address"></span></p>
+                    <p><span class="font-semibold">MOBILE :</span> <span id="mobile"></span></p>
+                    <p><span class="font-semibold">EMAIL :</span> <a href="#" id="email" class="text-blue-600 underline lowercase"></a></p>
+                </div>
+            </div>
+
+            <div class="text-sm text-center mt-4 text-gray-600">
+                <p class="italic">NOTE: We will send timetable via WhatsApp.</p>
+                <p class="mt-2 font-semibold">Thank you!</p>
+                <p class="text-gray-400">*****</p>
+            </div>
+        </div>
+
+        <div id="btns" style="display: none;" class="flex flex-col sm:flex-row justify-center gap-4 mt-6">
+            <button onclick="back()" class="bg-gray-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-gray-700 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition duration-200">Back</button>
+            <!-- <button onclick="printInvoice()" class="bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200">Print Invoice</button> -->
+            <button onclick="downloadInvoice()" class="bg-green-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition duration-200">Download Invoice</button>
+            <button onclick="shareInvoice()" class="bg-purple-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200">Share Invoice</button>
+        </div>
+    </div>
+    
+    <script src="invoice.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</body>
+</html>
